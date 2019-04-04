@@ -28,6 +28,16 @@ spring:
               exchangeType: fanout
             destination: transaction-exchange
             group: transaction-group
+  zipkin:
+    baseUrl: http://localhost:9411/
+    enabled: true
+    sender:
+      type: web
+  sleuth:
+    stream:
+      enabled: false
+    sampler:
+      probability: 1
 
 server:
   port: 5000
@@ -36,10 +46,6 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
-
-logging:
-  pattern:
-    console: "%d{dd.MM.yyyy HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
 
 management:
   endpoints:

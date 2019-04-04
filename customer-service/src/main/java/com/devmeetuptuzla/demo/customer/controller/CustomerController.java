@@ -4,13 +4,15 @@ import com.devmeetuptuzla.demo.customer.entity.Customer;
 import com.devmeetuptuzla.demo.customer.service.CustomerService;
 import com.devmeetuptuzla.demo.customer.service.dto.CustomerCreateDTO;
 import com.devmeetuptuzla.demo.customer.service.dto.CustomerDTO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/")
+@Api("Operations about customers.")
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -19,18 +21,21 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @PostMapping
-    public void createCustomer(@RequestBody @Valid CustomerCreateDTO customerCreateDTO) {
-        customerService.createCustomer(customerCreateDTO);
+    @PostMapping("/")
+    @ApiOperation(value = "Add new customer", response = Customer.class)
+    public Customer post(@RequestBody @Valid CustomerCreateDTO customerCreateDTO) {
+        return customerService.createCustomer(customerCreateDTO);
     }
 
-    @GetMapping
-    public List<Customer> findCustomers() {
+    @GetMapping("/")
+    @ApiOperation(value = "Get customers", response = Customer.class, responseContainer = "List")
+    public List<Customer> get() {
         return customerService.findCustomers();
     }
 
     @GetMapping("/{customerId}")
-    public CustomerDTO findCustomer(@PathVariable("customerId") String customerId) {
+    @ApiOperation(value = "Get customer with accounts", response = CustomerDTO.class)
+    public CustomerDTO get(@PathVariable("customerId") String customerId) {
         return customerService.findCustomer(customerId);
     }
 }

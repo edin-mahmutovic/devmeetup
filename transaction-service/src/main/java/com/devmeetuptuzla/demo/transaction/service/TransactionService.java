@@ -8,6 +8,8 @@ import com.devmeetuptuzla.demo.transaction.service.dto.TransactionCreateDTO;
 import com.devmeetuptuzla.demo.transaction.service.mapper.TransactionMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TransactionService {
 
@@ -22,11 +24,17 @@ public class TransactionService {
         this.transactionProducer = transactionProducer;
     }
 
-    public void createTransaction(TransactionCreateDTO transactionCreateDTO) {
+    public Transaction createTransaction(TransactionCreateDTO transactionCreateDTO) {
         Transaction transaction = transactionMapper.toEntity(transactionCreateDTO);
-        transactionRepository.save(transaction);
+        transaction = transactionRepository.save(transaction);
 
         TransactionMessage message = transactionMapper.toMessage(transaction);
         transactionProducer.produce(message);
+
+        return transaction;
+    }
+
+    public List<Transaction> findTransactions(Long accountId) {
+        return transactionRepository.findByAccountId(accountId);
     }
 }

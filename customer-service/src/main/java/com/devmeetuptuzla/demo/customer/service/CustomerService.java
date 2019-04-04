@@ -3,7 +3,7 @@ package com.devmeetuptuzla.demo.customer.service;
 import com.devmeetuptuzla.demo.customer.client.AccountClient;
 import com.devmeetuptuzla.demo.customer.entity.Customer;
 import com.devmeetuptuzla.demo.customer.repository.CustomerRepository;
-import com.devmeetuptuzla.demo.customer.service.dto.Account;
+import com.devmeetuptuzla.demo.customer.service.dto.AccountDTO;
 import com.devmeetuptuzla.demo.customer.service.dto.CustomerCreateDTO;
 import com.devmeetuptuzla.demo.customer.service.dto.CustomerDTO;
 import com.devmeetuptuzla.demo.customer.service.mapper.CustomerMapper;
@@ -20,7 +20,6 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
     private final AccountClient accountClient;
-
     @Autowired
     public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper,
                            AccountClient accountClient) {
@@ -29,9 +28,13 @@ public class CustomerService {
         this.accountClient = accountClient;
     }
 
-    public void createCustomer(CustomerCreateDTO customerCreateDTO) {
+    public Customer createCustomer(CustomerCreateDTO customerCreateDTO) {
         Customer customer = customerMapper.toEntity(customerCreateDTO);
-        customerRepository.save(customer);
+        return customerRepository.save(customer);
+    }
+
+    public List<Customer> findCustomers() {
+        return customerRepository.findAll();
     }
 
     public CustomerDTO findCustomer(String customerId) {
@@ -40,15 +43,9 @@ public class CustomerService {
                 .orElseThrow(() -> new RuntimeException("Customer Not Found"));
 
         CustomerDTO customerDTO = customerMapper.toDTO(customer);
-
-        log.info("Fetch accounts from customer service");
-        List<Account> accounts = accountClient.findCustomerAccounts(customerId);
+        List<AccountDTO> accounts = accountClient.findCustomerAccounts(customerId);
         customerDTO.setAccounts(accounts);
 
         return customerDTO;
-    }
-
-    public List<Customer> findCustomers() {
-        return customerRepository.findAll();
     }
 }

@@ -6,10 +6,6 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
 
-logging:
-  pattern:
-    console: "%d{dd.MM.yyyy HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
-
 management:
   endpoints:
     web:

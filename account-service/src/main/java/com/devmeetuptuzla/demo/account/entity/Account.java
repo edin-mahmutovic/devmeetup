@@ -1,5 +1,6 @@
 package com.devmeetuptuzla.demo.account.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,5 +21,6 @@ public class Account {
     @Column(nullable = false)
     private String currency;
     @Column(nullable = false)
+    @JsonIgnore
     private String customerId;
 }
