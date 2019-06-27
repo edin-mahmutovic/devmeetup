@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: api-proxy-ingress
+  namespace: banking-api
+spec:
+  backend:
+    serviceName: default-http-backend
+    servicePort: 80
+  rules:
+    - host: banking-api.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: gateway-service
+              servicePort: 8080
