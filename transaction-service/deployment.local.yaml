@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: transaction-service
-          image: gedao/transaction-service:1.0
+          image: gedao/transaction-service:2.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

@@ -1,4 +1,4 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb/customer-db
+      uri: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb/customer-db?authSource=admin&authMechanism=SCRAM-SHA-1
