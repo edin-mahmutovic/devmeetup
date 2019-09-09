@@ -7,13 +7,11 @@ metadata:
     app: rabbitmq
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: rabbitmq
   template:
     metadata:
       labels:
         app: rabbitmq
+        tier: banking-api
     spec:
       containers:
         - image: rabbitmq:3.7.8-management-alpine
@@ -22,15 +20,9 @@ spec:
             - name: RABBITMQ_VM_MEMORY_HIGH_WATERMARK
               value: "256MiB"
             - name: RABBITMQ_DEFAULT_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: rabbitmq-user
+              value: "demo"
             - name: RABBITMQ_DEFAULT_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: rabbitmq-password
+              value: "password"
           imagePullPolicy: Always
           resources:
             requests:
@@ -45,17 +37,22 @@ spec:
       volumes:
         - name: rabbitmq-data
           emptyDir: {}
+  selector:
+    matchLabels:
+      app: rabbitmq
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: banking-api
   name: rabbitmq
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
   labels:
     app: rabbitmq
     tier: banking-api
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - port: 5672
       protocol: TCP

@@ -14,10 +14,14 @@ spec:
     metadata:
       labels:
         app: customer-service
+      annotations:
+        prometheus.io/path: '/actuator/prometheus'
+        prometheus.io/port: '8080'
+        prometheus.io/scrape: 'true'
     spec:
       containers:
         - name: customer-service
-          image: gedao/customer-service:2.2
+          image: devmeetup/customer-service:1.1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

@@ -7,6 +7,7 @@ import com.devmeetuptuzla.demo.transaction.repository.TransactionRepository;
 import com.devmeetuptuzla.demo.transaction.service.dto.TransactionCreateDTO;
 import com.devmeetuptuzla.demo.transaction.service.mapper.TransactionMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class TransactionService {
         this.transactionProducer = transactionProducer;
     }
 
+    @Transactional
     public Transaction createTransaction(TransactionCreateDTO transactionCreateDTO) {
         Transaction transaction = transactionMapper.toEntity(transactionCreateDTO);
         transaction = transactionRepository.save(transaction);
@@ -34,6 +36,7 @@ public class TransactionService {
         return transaction;
     }
 
+    @Transactional(readOnly = true)
     public List<Transaction> findTransactions(Long accountId) {
         return transactionRepository.findByAccountId(accountId);
     }

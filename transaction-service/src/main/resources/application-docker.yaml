@@ -15,7 +15,7 @@ spring:
           lob:
             non_contextual_creation: true
   rabbitmq:
-    host: rabbitmq
+    host: ${RABBITMQ_HOST}
     username: ${RABBITMQ_USER}
     password: ${RABBITMQ_PASSWORD}
   cloud:

@@ -4,6 +4,6 @@ metadata:
   name: app-config
   namespace: banking-api
 data:
-  postgres-user: gedao
-  mongo-user: gedao
-  rabbitmq-user: gedao
+  postgres-user: demo
+  mongo-user: demo
+  rabbitmq-user: demo

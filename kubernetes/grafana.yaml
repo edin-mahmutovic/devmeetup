@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-service
+  namespace: banking-api
+  labels:
+    k8s-app: grafana-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: grafana-service
+  template:
+    metadata:
+      name: grafana-service
+      labels:
+        k8s-app: grafana-service
+    spec:
+      containers:
+        - name: grafana
+          image: grafana/grafana
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              value: admin
+            - name: GF_SECURITY_ADMIN_USER
+              value: admin
+            - name: GF_USERS_ALLOW_SIGN_UP
+              value: "false"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-service
+  namespace: banking-api
+  labels:
+    k8s-app: grafana-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 3000
+  selector:
+    k8s-app: grafana-service

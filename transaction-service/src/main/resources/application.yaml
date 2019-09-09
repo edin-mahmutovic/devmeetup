@@ -1,3 +1,19 @@
 spring:
   application:
     name: transaction-service
+
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    enabled-by-default: true
+  endpoint:
+    prometheus:
+      enabled: true
+    health:
+      show-details: ALWAYS

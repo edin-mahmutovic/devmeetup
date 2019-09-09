@@ -14,10 +14,14 @@ spec:
     metadata:
       labels:
         app: transaction-service
+      annotations:
+        prometheus.io/path: '/actuator/prometheus'
+        prometheus.io/port: '8080'
+        prometheus.io/scrape: 'true'
     spec:
       containers:
         - name: transaction-service
-          image: gedao/transaction-service:2.0
+          image: devmeetup/transaction-service:1.5
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -32,6 +36,8 @@ spec:
                 secretKeyRef:
                   name: app-secret
                   key: postgres-password
+            - name: RABBITMQ_HOST
+              value: "rabbitmq"
             - name: RABBITMQ_USER
               valueFrom:
                 configMapKeyRef:
